@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,17 @@ import java.util.List;
 
 public class HomePage {
     private Logger logger = LoggerFactory.getLogger(HomePage.class);
+
+    private final JavascriptExecutor js;
+
+    @FindBy(id = "nav-files-tab")
+    private WebElement navFilesTab;
+
+    @FindBy(id = "nav-notes-tab")
+    private WebElement navNotesTab;
+
+    @FindBy(id = "nav-credentials-tab")
+    private WebElement navCredentialsTab;
 
     @FindBy(id = "fileUpload")
     private WebElement fileUpload;
@@ -30,8 +42,48 @@ public class HomePage {
     @FindBy(id = "fileTable")
     private WebElement fileTable;
 
+    @FindBy(id = "userTable")
+    private WebElement userTable;
+
+    @FindBy(id = "noteModalLabel")
+    private WebElement noteModalLabel;
+
+    @FindBy(id = "add-note-button")
+    private WebElement addNoteButton;
+
+    @FindBy(id = "note-title")
+    private WebElement noteTitle;
+
+    @FindBy(id = "note-description")
+    private WebElement noteDescription;
+
+    @FindBy(id = "save-note-button")
+    private WebElement saveNoteButton;
+
+    @FindBy(id = "close-note-button")
+    private WebElement closeNoteButton;
+
+    @FindBy(id = "note-edit-link")
+    private List<WebElement> noteEditLinks;
+
+    @FindBy(id = "note-delete-link")
+    private List<WebElement> noteDeleteLinks;
+
     public HomePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
+        js = (JavascriptExecutor) driver;
+    }
+
+    public void navToFiles() {
+        navFilesTab.click();
+    }
+
+    public void navToNotes() {
+        navNotesTab.click();
+    }
+
+    public void navToCredentials() {
+        navCredentialsTab.click();
     }
 
     public void uploadFile() {
@@ -53,4 +105,25 @@ public class HomePage {
     public int numberOfFiles() {
         return fileTable.findElements(By.xpath(".//tbody/tr")).size();
     }
+
+    public void clickAddNote() {
+        js.executeScript("arguments[0].click();", addNoteButton);
+    }
+
+    public void addNote() {
+        js.executeScript("arguments[0].value='" + "test" + "';", noteTitle);
+        js.executeScript("arguments[0].value='" + "description" + "';", noteDescription);
+        js.executeScript("arguments[0].click();", saveNoteButton);
+    }
+
+    public void deleteNote() {
+        if (!noteDeleteLinks.isEmpty()) {
+            js.executeScript("arguments[0].click();", noteDeleteLinks.get(0));
+        }
+    }
+
+    public int numberOfNotes() {
+        return userTable.findElements(By.xpath(".//tbody/tr")).size();
+    }
+
 }
