@@ -3,7 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
-import com.udacity.jwdnd.course1.cloudstorage.services.HashService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/fileUpload")
 public class FileUploadController {
-    private Logger logger = LoggerFactory.getLogger(HashService.class);
+    private Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     private FileService fileService;
     private UserService userService;
