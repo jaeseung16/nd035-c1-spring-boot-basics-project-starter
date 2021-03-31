@@ -69,6 +69,27 @@ public class HomePage {
     @FindBy(id = "note-delete-link")
     private List<WebElement> noteDeleteLinks;
 
+    @FindBy(id = "add-credential-button")
+    private WebElement addCredentialButton;
+
+    @FindBy(id = "credential-url")
+    private WebElement credentialUrl;
+
+    @FindBy(id = "credential-username")
+    private WebElement credentialUsername;
+
+    @FindBy(id = "credential-password")
+    private WebElement credentialPassword;
+
+    @FindBy(id = "save-credential-button")
+    private WebElement saveCredentialButton;
+
+    @FindBy(id = "credentialTable")
+    private WebElement credentialTable;
+
+    @FindBy(id = "credential-delete-link")
+    private List<WebElement> credentialDeleteLinks;
+
     public HomePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         js = (JavascriptExecutor) driver;
@@ -126,4 +147,25 @@ public class HomePage {
         return userTable.findElements(By.xpath(".//tbody/tr")).size();
     }
 
+    public void clickAddCredential() {
+        js.executeScript("arguments[0].click();", addCredentialButton);
+    }
+
+    public void addCredential() {
+        js.executeScript("arguments[0].value='" + "test_url" + "';", credentialUrl);
+        js.executeScript("arguments[0].value='" + "test_username" + "';", credentialUsername);
+        js.executeScript("arguments[0].value='" + "test_password" + "';", credentialPassword);
+
+        js.executeScript("arguments[0].click();", saveCredentialButton);
+    }
+
+    public int numberOfCredentials() {
+        return credentialTable.findElements(By.xpath(".//tbody/tr")).size();
+    }
+
+    public void deleteCredential() {
+        if (!credentialDeleteLinks.isEmpty()) {
+            js.executeScript("arguments[0].click();", credentialDeleteLinks.get(0));
+        }
+    }
 }
