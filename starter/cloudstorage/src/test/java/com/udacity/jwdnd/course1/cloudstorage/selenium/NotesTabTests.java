@@ -22,6 +22,7 @@ public class NotesTabTests {
 
     private static WebDriver driver;
     private HomePage homePage;
+    private ResultPage resultPage;
 
     @BeforeAll
     public static void beforeAll() {
@@ -53,6 +54,8 @@ public class NotesTabTests {
         homePage.navToNotes();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
+
+        resultPage = new ResultPage(driver);
     }
 
     @Test
@@ -64,7 +67,11 @@ public class NotesTabTests {
         wait.until(webDriver -> webDriver.findElement(By.id("noteModal")));
 
         homePage.addNote();
-        wait = new WebDriverWait(driver, 2);
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         homePage.navToNotes();
@@ -83,7 +90,11 @@ public class NotesTabTests {
         wait.until(webDriver -> webDriver.findElement(By.id("noteModal")));
 
         homePage.addNote();
-        wait = new WebDriverWait(driver, 2);
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         homePage.navToNotes();
@@ -91,7 +102,11 @@ public class NotesTabTests {
         wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
 
         homePage.deleteNote();
-        wait = new WebDriverWait(driver, 2);
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         homePage.navToNotes();

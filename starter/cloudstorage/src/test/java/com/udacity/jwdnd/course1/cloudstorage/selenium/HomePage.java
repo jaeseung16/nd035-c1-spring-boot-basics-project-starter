@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class HomePage {
-    private Logger logger = LoggerFactory.getLogger(HomePage.class);
+    private final Logger logger = LoggerFactory.getLogger(HomePage.class);
 
     private final JavascriptExecutor js;
 
