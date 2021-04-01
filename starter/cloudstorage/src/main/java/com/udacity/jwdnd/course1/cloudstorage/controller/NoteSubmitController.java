@@ -29,15 +29,20 @@ public class NoteSubmitController {
     @PostMapping
     public String noteSubmit(Authentication authentication, @ModelAttribute("note") Note note, Model model) {
         User user = this.userService.getUser(authentication.getName());
-
         note.setUserid(user.getUserid());
 
+        Boolean success;
         if (note.getNoteid() != null) {
-            this.noteService.updateNote(note);
+            Integer numberOfUpdatedRows = this.noteService.updateNote(note);
+            success = numberOfUpdatedRows == 1;
         } else {
             Integer noteid = this.noteService.addNote(note);
+            success = noteid > 0;
         }
 
-        return "redirect:/home";
+        model.addAttribute("success", success);
+        model.addAttribute("error", !success);
+        model.addAttribute("errorMessage", "There was an error submitting a note. Please try again.");
+        return "result";
     }
 }
