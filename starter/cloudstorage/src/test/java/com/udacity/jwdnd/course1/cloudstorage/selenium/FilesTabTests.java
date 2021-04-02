@@ -67,7 +67,7 @@ public class FilesTabTests {
     }
 
     @Test
-    public void deleteFile() throws Exception {
+    public void deleteFile() {
         int numberOfFiles = homePage.numberOfFiles();
 
         homePage.uploadFile();
@@ -86,7 +86,7 @@ public class FilesTabTests {
         resultPage.clickSuccessLink();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
-        
+
         assertEquals(numberOfFiles, homePage.numberOfFiles());
     }
 }

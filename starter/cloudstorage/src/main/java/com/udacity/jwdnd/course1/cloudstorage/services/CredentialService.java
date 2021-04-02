@@ -24,13 +24,11 @@ public class CredentialService {
     }
 
     public Credential getCredential(Integer credentialid) {
-        Credential credential = credentialMapper.getCredential(credentialid);
-        return credential;
+        return credentialMapper.getCredential(credentialid);
     }
 
     public List<Credential> getCredentials(Integer userid) {
-        List<Credential> credentials = credentialMapper.getCredentials(userid);
-        return credentials;
+        return credentialMapper.getCredentials(userid);
     }
 
     public String decryptPassword(Credential credential) {

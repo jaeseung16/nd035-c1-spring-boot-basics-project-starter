@@ -45,7 +45,7 @@ public class FileUploadController {
                     aFile.setUserid(user.getUserid());
                     aFile.setFiledata(file.getBytes());
 
-                    Integer fileid = this.fileService.addFile(aFile);
+                    Integer fileid = fileService.addFile(aFile);
                     success = fileid > 0;
                 } else {
                     success = false;

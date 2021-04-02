@@ -33,10 +33,10 @@ public class NoteSubmitController {
 
         Boolean success;
         if (note.getNoteid() != null) {
-            Integer numberOfUpdatedRows = this.noteService.updateNote(note);
+            Integer numberOfUpdatedRows = noteService.updateNote(note);
             success = numberOfUpdatedRows == 1;
         } else {
-            Integer noteid = this.noteService.addNote(note);
+            Integer noteid = noteService.addNote(note);
             success = noteid > 0;
         }
 
