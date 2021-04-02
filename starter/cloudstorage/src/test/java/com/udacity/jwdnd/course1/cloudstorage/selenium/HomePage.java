@@ -114,7 +114,7 @@ public class HomePage {
         try {
             File exampleFile = Paths.get(HomePage.class.getResource("/example.txt").toURI()).toFile();
             fileUpload.sendKeys(exampleFile.getAbsolutePath());
-            fileUploadButton.click();
+            js.executeScript("arguments[0].click();", fileUploadButton);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -122,7 +122,7 @@ public class HomePage {
 
     public void deleteFile() {
         if (!fileDeleteLinks.isEmpty()) {
-            fileDeleteLinks.get(0).click();
+            js.executeScript("arguments[0].click();", fileDeleteLinks.get(0));
         }
     }
 

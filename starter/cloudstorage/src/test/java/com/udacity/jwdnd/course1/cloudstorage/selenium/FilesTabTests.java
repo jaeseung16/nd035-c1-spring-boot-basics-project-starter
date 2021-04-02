@@ -65,28 +65,5 @@ public class FilesTabTests {
 
         assertEquals(numberOfFiles + 1, homePage.numberOfFiles());
     }
-
-    @Test
-    public void deleteFile() {
-        int numberOfFiles = homePage.numberOfFiles();
-
-        homePage.uploadFile();
-
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
-
-        resultPage.clickSuccessLink();
-        wait = new WebDriverWait(driver, 5);
-        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
-
-        homePage.deleteFile();
-        wait = new WebDriverWait(driver, 5);
-        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
-
-        resultPage.clickSuccessLink();
-        wait = new WebDriverWait(driver, 5);
-        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
-
-        assertEquals(numberOfFiles, homePage.numberOfFiles());
-    }
+    
 }
