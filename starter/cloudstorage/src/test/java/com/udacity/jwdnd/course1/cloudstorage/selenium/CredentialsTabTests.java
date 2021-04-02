@@ -7,12 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CredentialsTabTests {
@@ -77,6 +79,55 @@ public class CredentialsTabTests {
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
 
+        WebElement element = driver.findElement(By.xpath("//th[text()='test_url']"));
+        WebElement element2 = driver.findElement(By.xpath("//td[text()='test_username']"));
+
+        assertNotNull(element);
+        assertNotNull(element2);
+        assertEquals(numberOfCredentials + 1, homePage.numberOfCredentials());
+    }
+
+    @Test
+    public void testEditCredential() {
+        int numberOfCredentials = homePage.numberOfCredentials();
+
+        homePage.clickAddCredential();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(webDriver -> webDriver.findElement(By.id("credentialModal")));
+
+        homePage.addCredential();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+
+        homePage.navToCredentials();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
+
+        homePage.clickEditCredential();
+        wait = new WebDriverWait(driver, 20);
+        wait.until(webDriver -> webDriver.findElement(By.id("credentialModal")));
+
+        homePage.editCredential();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+
+        homePage.navToCredentials();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
+
+        WebElement element = driver.findElement(By.xpath("//th[text()='test_url_edited']"));
+        WebElement element2 = driver.findElement(By.xpath("//td[text()='test_username_edited']"));
+
+        assertNotNull(element);
+        assertNotNull(element2);
         assertEquals(numberOfCredentials + 1, homePage.numberOfCredentials());
     }
 

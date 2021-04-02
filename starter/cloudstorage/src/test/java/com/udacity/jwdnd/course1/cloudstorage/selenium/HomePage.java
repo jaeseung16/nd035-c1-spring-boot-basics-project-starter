@@ -87,6 +87,9 @@ public class HomePage {
     @FindBy(id = "credentialTable")
     private WebElement credentialTable;
 
+    @FindBy(id = "credential-edit-link")
+    private List<WebElement> credentialEditLinks;
+
     @FindBy(id = "credential-delete-link")
     private List<WebElement> credentialDeleteLinks;
 
@@ -163,10 +166,24 @@ public class HomePage {
         js.executeScript("arguments[0].click();", addCredentialButton);
     }
 
+    public void clickEditCredential() {
+        if (!credentialEditLinks.isEmpty()) {
+            js.executeScript("arguments[0].click();", credentialEditLinks.get(0));
+        }
+    }
+
     public void addCredential() {
         js.executeScript("arguments[0].value='" + "test_url" + "';", credentialUrl);
         js.executeScript("arguments[0].value='" + "test_username" + "';", credentialUsername);
         js.executeScript("arguments[0].value='" + "test_password" + "';", credentialPassword);
+
+        js.executeScript("arguments[0].click();", saveCredentialButton);
+    }
+
+    public void editCredential() {
+        js.executeScript("arguments[0].value='" + "test_url_edited" + "';", credentialUrl);
+        js.executeScript("arguments[0].value='" + "test_username_edited" + "';", credentialUsername);
+        js.executeScript("arguments[0].value='" + "test_password_edited" + "';", credentialPassword);
 
         js.executeScript("arguments[0].click();", saveCredentialButton);
     }
