@@ -51,12 +51,12 @@ public class CredentialService {
         credential.setPassword(encryptedPassword);
     }
 
-    public void updateCredential(Credential credential) {
+    public int updateCredential(Credential credential) {
         encryptPassword(credential);
-        credentialMapper.update(credential);
+        return credentialMapper.update(credential);
     }
 
-    public void deleteCredential(Integer credentialid) {
-        credentialMapper.delete(credentialid);
+    public int deleteCredential(Integer credentialid) {
+        return credentialMapper.delete(credentialid);
     }
 }

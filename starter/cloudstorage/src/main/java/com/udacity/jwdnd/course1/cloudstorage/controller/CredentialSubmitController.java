@@ -32,12 +32,18 @@ public class CredentialSubmitController {
 
         credential.setUserid(user.getUserid());
 
+        Boolean success;
         if (credential.getCredentialid() != null) {
-            this.credentialService.updateCredential(credential);
+            Integer numberOfUpdatedRows = this.credentialService.updateCredential(credential);
+            success = numberOfUpdatedRows == 1;
         } else {
             Integer credentialid = this.credentialService.addCredential(credential);
+            success = credentialid > 0;
         }
 
-        return "redirect:/home";
+        model.addAttribute("success", success);
+        model.addAttribute("error", !success);
+        model.addAttribute("errorMessage", "There was an error submitting a credential. Please try again.");
+        return "result";
     }
 }
