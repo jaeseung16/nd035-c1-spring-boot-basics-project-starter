@@ -21,6 +21,7 @@ public class CredentialsTests {
 
     private static WebDriver driver;
     private HomePage homePage;
+    private ResultPage resultPage;
 
     @BeforeAll
     public static void beforeAll() {
@@ -52,6 +53,8 @@ public class CredentialsTests {
         homePage.navToCredentials();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
+
+        resultPage = new ResultPage(driver);
     }
 
     @Test
@@ -63,6 +66,10 @@ public class CredentialsTests {
         wait.until(webDriver -> webDriver.findElement(By.id("credentialModal")));
 
         homePage.addCredential();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
@@ -83,6 +90,10 @@ public class CredentialsTests {
 
         homePage.addCredential();
         wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         homePage.navToCredentials();
@@ -90,6 +101,10 @@ public class CredentialsTests {
         wait.until(webDriver -> webDriver.findElement(By.id("add-credential-button")));
 
         homePage.deleteCredential();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
