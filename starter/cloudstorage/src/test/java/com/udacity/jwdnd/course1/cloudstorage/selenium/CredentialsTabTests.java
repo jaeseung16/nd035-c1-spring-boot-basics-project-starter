@@ -15,7 +15,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CredentialsTests {
+public class CredentialsTabTests {
     @LocalServerPort
     private Integer port;
 
