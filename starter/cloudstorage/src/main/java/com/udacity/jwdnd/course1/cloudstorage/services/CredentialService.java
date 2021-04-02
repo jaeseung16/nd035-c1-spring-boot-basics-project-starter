@@ -25,19 +25,16 @@ public class CredentialService {
 
     public Credential getCredential(Integer credentialid) {
         Credential credential = credentialMapper.getCredential(credentialid);
-        decryptPassword(credential);
         return credential;
     }
 
     public List<Credential> getCredentials(Integer userid) {
         List<Credential> credentials = credentialMapper.getCredentials(userid);
-        credentials.forEach(this::decryptPassword);
         return credentials;
     }
 
-    private void decryptPassword(Credential credential) {
-        String decryptedPassword = encryptionService.decryptValue(credential.getPassword(), credential.getKey());
-        credential.setPassword(decryptedPassword);
+    public String decryptPassword(Credential credential) {
+        return encryptionService.decryptValue(credential.getPassword(), credential.getKey());
     }
 
     private void encryptPassword(Credential credential) {

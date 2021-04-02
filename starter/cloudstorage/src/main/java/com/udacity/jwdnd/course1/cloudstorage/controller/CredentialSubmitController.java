@@ -28,16 +28,16 @@ public class CredentialSubmitController {
 
     @PostMapping
     public String credentialSubmit(Authentication authentication, @ModelAttribute("credential") Credential credential, Model model) {
-        User user = this.userService.getUser(authentication.getName());
+        User user = userService.getUser(authentication.getName());
 
         credential.setUserid(user.getUserid());
 
         Boolean success;
         if (credential.getCredentialid() != null) {
-            Integer numberOfUpdatedRows = this.credentialService.updateCredential(credential);
+            Integer numberOfUpdatedRows = credentialService.updateCredential(credential);
             success = numberOfUpdatedRows == 1;
         } else {
-            Integer credentialid = this.credentialService.addCredential(credential);
+            Integer credentialid = credentialService.addCredential(credential);
             success = credentialid > 0;
         }
 

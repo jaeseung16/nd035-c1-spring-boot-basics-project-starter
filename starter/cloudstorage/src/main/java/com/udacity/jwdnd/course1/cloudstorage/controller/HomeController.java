@@ -31,13 +31,14 @@ public class HomeController {
 
     @GetMapping
     public String homeView(Authentication authentication, Model model) {
-        User user = this.userService.getUser(authentication.getName());
+        User user = userService.getUser(authentication.getName());
 
-        model.addAttribute("files", this.fileService.getFiles(user.getUserid()));
-        model.addAttribute("notes", this.noteService.getNotes(user.getUserid()));
-        model.addAttribute("credentials", this.credentialService.getCredentials(user.getUserid()));
+        model.addAttribute("files", fileService.getFiles(user.getUserid()));
+        model.addAttribute("notes", noteService.getNotes(user.getUserid()));
+        model.addAttribute("credentials", credentialService.getCredentials(user.getUserid()));
         model.addAttribute("note", new Note());
         model.addAttribute("credential", new Credential());
+        model.addAttribute("credentialService", credentialService);
 
         return "home";
     }
