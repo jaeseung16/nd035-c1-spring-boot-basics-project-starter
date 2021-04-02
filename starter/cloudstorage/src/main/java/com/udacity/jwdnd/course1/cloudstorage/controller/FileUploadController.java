@@ -33,17 +33,24 @@ public class FileUploadController {
         Boolean success = false;
         if (file != null && !file.isEmpty()) {
             try {
-                User user = this.userService.getUser(authentication.getName());
+                User user = userService.getUser(authentication.getName());
 
-                File aFile = new File();
-                aFile.setFilename(StringUtils.cleanPath(file.getOriginalFilename()));
-                aFile.setContenttype(file.getContentType());
-                aFile.setFilesize(String.valueOf(file.getSize()));
-                aFile.setUserid(user.getUserid());
-                aFile.setFiledata(file.getBytes());
+                String filename = file.getOriginalFilename();
 
-                Integer fileid = this.fileService.addFile(aFile);
-                success = fileid > 0;
+                if (fileService.isFilenameAvailable(filename)) {
+                    File aFile = new File();
+                    aFile.setFilename(StringUtils.cleanPath(file.getOriginalFilename()));
+                    aFile.setContenttype(file.getContentType());
+                    aFile.setFilesize(String.valueOf(file.getSize()));
+                    aFile.setUserid(user.getUserid());
+                    aFile.setFiledata(file.getBytes());
+
+                    Integer fileid = this.fileService.addFile(aFile);
+                    success = fileid > 0;
+                } else {
+                    success = false;
+                }
+
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

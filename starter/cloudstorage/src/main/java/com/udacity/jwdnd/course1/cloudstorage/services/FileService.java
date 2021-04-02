@@ -24,6 +24,10 @@ public class FileService {
         return fileMapper.getFile(fileId);
     }
 
+    public boolean isFilenameAvailable(String filename) {
+        return fileMapper.getFileByFilename(filename) == null;
+    }
+
     public List<File> getFiles(Integer userid) {
         return fileMapper.getFiles(userid);
     }
