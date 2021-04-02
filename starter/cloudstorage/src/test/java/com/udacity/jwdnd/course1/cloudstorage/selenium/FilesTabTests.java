@@ -19,6 +19,7 @@ public class FilesTabTests {
 
     private static WebDriver driver;
     private HomePage homePage;
+    private ResultPage resultPage;
 
     @BeforeAll
     public static void beforeAll() {
@@ -46,6 +47,8 @@ public class FilesTabTests {
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         homePage = new HomePage(driver);
+
+        resultPage = new ResultPage(driver);
     }
 
     @Test
@@ -53,8 +56,11 @@ public class FilesTabTests {
         int numberOfFiles = homePage.numberOfFiles();
 
         homePage.uploadFile();
-
         WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
         assertEquals(numberOfFiles + 1, homePage.numberOfFiles());
@@ -67,13 +73,20 @@ public class FilesTabTests {
         homePage.uploadFile();
 
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
 
-        homePage.deleteFile();
-
+        resultPage.clickSuccessLink();
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
 
+        homePage.deleteFile();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+        
         assertEquals(numberOfFiles, homePage.numberOfFiles());
     }
 }
