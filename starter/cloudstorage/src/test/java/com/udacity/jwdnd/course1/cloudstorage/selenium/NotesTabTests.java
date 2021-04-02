@@ -7,12 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NotesTabTests {
@@ -59,7 +61,7 @@ public class NotesTabTests {
     }
 
     @Test
-    public void testAddNote() throws Exception {
+    public void testAddNote() {
         int numberOfNotes = homePage.numberOfNotes();
 
         homePage.clickAddNote();
@@ -78,6 +80,55 @@ public class NotesTabTests {
         wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
 
+        WebElement element = driver.findElement(By.xpath("//th[text()='title']"));
+        WebElement element2 = driver.findElement(By.xpath("//td[text()='description']"));
+
+        assertNotNull(element);
+        assertNotNull(element2);
+        assertEquals(numberOfNotes + 1, homePage.numberOfNotes());
+    }
+
+    @Test
+    public void testEditNote() {
+        int numberOfNotes = homePage.numberOfNotes();
+
+        homePage.clickAddNote();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(webDriver -> webDriver.findElement(By.id("noteModal")));
+
+        homePage.addNote();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+
+        homePage.navToNotes();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
+
+        homePage.clickEditNote();
+        wait = new WebDriverWait(driver, 20);
+        wait.until(webDriver -> webDriver.findElement(By.id("noteModal")));
+
+        homePage.editNote();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("result-success-link")));
+
+        resultPage.clickSuccessLink();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("fileUpload-button")));
+
+        homePage.navToNotes();
+        wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("add-note-button")));
+
+        WebElement element = driver.findElement(By.xpath("//th[text()='edited title']"));
+        WebElement element2 = driver.findElement(By.xpath("//td[text()='editied description']"));
+
+        assertNotNull(element);
+        assertNotNull(element2);
         assertEquals(numberOfNotes + 1, homePage.numberOfNotes());
     }
 

@@ -132,8 +132,20 @@ public class HomePage {
     }
 
     public void addNote() {
-        js.executeScript("arguments[0].value='" + "test" + "';", noteTitle);
+        js.executeScript("arguments[0].value='" + "title" + "';", noteTitle);
         js.executeScript("arguments[0].value='" + "description" + "';", noteDescription);
+        js.executeScript("arguments[0].click();", saveNoteButton);
+    }
+
+    public void clickEditNote() {
+        if (!noteEditLinks.isEmpty()) {
+            js.executeScript("arguments[0].click();", noteEditLinks.get(0));
+        }
+    }
+
+    public void editNote() {
+        js.executeScript("arguments[0].value='" + "edited title" + "';", noteTitle);
+        js.executeScript("arguments[0].value='" + "editied description" + "';", noteDescription);
         js.executeScript("arguments[0].click();", saveNoteButton);
     }
 
