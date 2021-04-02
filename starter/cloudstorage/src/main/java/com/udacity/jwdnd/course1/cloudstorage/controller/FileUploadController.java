@@ -30,26 +30,29 @@ public class FileUploadController {
 
     @PostMapping
     public String fileUpload(Authentication authentication, @RequestParam("file") MultipartFile file, Model model) {
-        Integer fileid = -1;
+        Boolean success = false;
         if (file != null && !file.isEmpty()) {
             try {
                 User user = this.userService.getUser(authentication.getName());
 
                 File aFile = new File();
-
                 aFile.setFilename(StringUtils.cleanPath(file.getOriginalFilename()));
                 aFile.setContenttype(file.getContentType());
                 aFile.setFilesize(String.valueOf(file.getSize()));
                 aFile.setUserid(user.getUserid());
                 aFile.setFiledata(file.getBytes());
 
-                fileid = this.fileService.addFile(aFile);
+                Integer fileid = this.fileService.addFile(aFile);
+                success = fileid > 0;
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
 
-        return "redirect:/home";
+        model.addAttribute("success", success);
+        model.addAttribute("error", !success);
+        model.addAttribute("errorMessage", "There was an error uploading a file. Please try again.");
+        return "result";
     }
 
 }
