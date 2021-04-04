@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -42,20 +43,24 @@ public class SignupTests {
     @Test
     public void testSignupSuccess() {
         signupPage.signup();
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        String url = wait.until(WebDriver::getCurrentUrl);
 
-        assertTrue(signupPage.isSuccessMsgDisplayed());
+        assertEquals("http://localhost:" + port +"/login", url);
     }
 
     @Test
     public void testSignupError() {
         signupPage.signup();
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
+
+        driver.get("http://localhost:" + port + "/signup");
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
 
         signupPage.signup();
-        wait = new WebDriverWait(driver, 2);
+        wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
 
         assertTrue(signupPage.isErrorMsgDisplayed());

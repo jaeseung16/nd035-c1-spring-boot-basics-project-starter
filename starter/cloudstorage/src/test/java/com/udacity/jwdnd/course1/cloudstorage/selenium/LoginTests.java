@@ -39,7 +39,7 @@ public class LoginTests {
         driver.get("http://localhost:" + port + "/signup");
         new SignupPage(driver).signup();
 
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
 
         driver.get("http://localhost:" + port + "/login");
@@ -49,7 +49,7 @@ public class LoginTests {
     @Test
     public void testLoginSuccess() {
         loginPage.login();
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         String url = wait.until(WebDriver::getCurrentUrl);
 
         assertEquals("http://localhost:" + port +"/home", url);
@@ -58,7 +58,7 @@ public class LoginTests {
     @Test
     public void testLoginFailure() {
         loginPage.wrongLogin();
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(webDriver -> webDriver.findElement(By.id("submit-button")));
 
         assertTrue(loginPage.isErrorMsgDisplayed());
@@ -67,7 +67,7 @@ public class LoginTests {
     @Test
     public void testClickSignup() {
         loginPage.clickSignup();
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         String url = wait.until(WebDriver::getCurrentUrl);
 
         assertEquals("http://localhost:" + port +"/signup", url);
