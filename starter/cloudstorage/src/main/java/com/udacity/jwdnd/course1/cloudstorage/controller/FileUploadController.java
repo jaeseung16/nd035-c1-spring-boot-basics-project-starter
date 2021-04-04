@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/fileUpload")
 public class FileUploadController {
-    private Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+    private final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+
+    private final long OneGB = 1073741824;
 
     private FileService fileService;
     private UserService userService;
@@ -31,34 +33,42 @@ public class FileUploadController {
     @PostMapping
     public String fileUpload(Authentication authentication, @RequestParam("file") MultipartFile file, Model model) {
         Boolean success = false;
+        String errorMessage = "";
         if (file != null && !file.isEmpty()) {
-            try {
-                User user = userService.getUser(authentication.getName());
+            if (file.getSize() > OneGB) {
+                success = false;
+                errorMessage = "File cannot be uploaded. File size exceeds 1 GB.";
+            } else {
+                try {
+                    User user = userService.getUser(authentication.getName());
 
-                String filename = file.getOriginalFilename();
+                    String filename = file.getOriginalFilename();
 
-                if (fileService.isFilenameAvailable(filename)) {
-                    File aFile = new File();
-                    aFile.setFilename(StringUtils.cleanPath(file.getOriginalFilename()));
-                    aFile.setContenttype(file.getContentType());
-                    aFile.setFilesize(String.valueOf(file.getSize()));
-                    aFile.setUserid(user.getUserid());
-                    aFile.setFiledata(file.getBytes());
+                    if (fileService.isFilenameAvailable(filename)) {
+                        File aFile = new File();
+                        aFile.setFilename(StringUtils.cleanPath(file.getOriginalFilename()));
+                        aFile.setContenttype(file.getContentType());
+                        aFile.setFilesize(String.valueOf(file.getSize()));
+                        aFile.setUserid(user.getUserid());
+                        aFile.setFiledata(file.getBytes());
 
-                    Integer fileid = fileService.addFile(aFile);
-                    success = fileid > 0;
-                } else {
+                        Integer fileid = fileService.addFile(aFile);
+                        success = fileid > 0;
+                    } else {
+                        success = false;
+                        errorMessage = "There was an error uploading a file. Please try again.";
+                    }
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
                     success = false;
+                    errorMessage = "There was an error uploading a file. Please try again.";
                 }
-
-            } catch (Exception e) {
-                logger.error(e.getMessage());
             }
         }
 
         model.addAttribute("success", success);
         model.addAttribute("error", !success);
-        model.addAttribute("errorMessage", "There was an error uploading a file. Please try again.");
+        model.addAttribute("errorMessage", errorMessage);
         return "result";
     }
 
